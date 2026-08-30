@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#E8682A">
+  <meta name="description" content="Mahalingeshwar Kirani Store — Shop Management App for collection, purchase, profit, and credit tracking.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MK Store">
+  <title>Mahalingeshwar Kirani Store</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ══════════════════════════════════════════════
+       PAGE: LANGUAGE CHOOSER
+       ══════════════════════════════════════════════ -->
+  <div id="page-language-chooser" class="page active">
+    <div class="lang-chooser-logo">
+      <div class="lang-chooser-shop-icon">🛒</div>
+      <div class="lang-chooser-title">MAHALINGESHWAR KIRANI STORE</div>
+      <div class="lang-chooser-subtitle">ಮಹಾಲಿಂಗೇಶ್ವರ ಕಿರಾಣಿ ಸ್ಟೋರ್</div>
+    </div>
+    <p class="lang-chooser-prompt">ಭಾಷೆ ಆಯ್ಕೆ ಮಾಡಿ / Choose Language</p>
+    <div class="lang-chooser-buttons">
+      <button id="btn-lang-kn" class="lang-btn lang-btn-kn">ಕನ್ನಡ</button>
+      <button id="btn-lang-en" class="lang-btn lang-btn-en">English</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PAGE: DASHBOARD
+       ══════════════════════════════════════════════ -->
+  <div id="page-dashboard" class="page">
+    <!-- Header -->
+    <div class="dash-header">
+      <div class="dash-header-row">
+        <div>
+          <div class="dash-shop-name">MAHALINGESHWAR KIRANI STORE</div>
+          <div class="dash-shop-name-kn">ಮಹಾಲಿಂಗೇಶ್ವರ ಕಿರಾಣಿ ಸ್ಟೋರ್</div>
+          <div class="dash-date" id="dash-date"></div>
+        </div>
+        <button class="lang-switch">ಕನ್ನಡ</button>
+      </div>
+    </div>
+
+    <!-- Today Summary -->
+    <div class="today-banner">
+      <div class="today-banner-label" data-i18n="today">Today</div>
+      <div class="today-banner-grid">
+        <div class="today-banner-item">
+          <div class="today-banner-item-label" data-i18n="collection">Collection</div>
+          <div class="today-banner-item-value" id="dash-today-col">₹0.00</div>
+        </div>
+        <div class="today-banner-item">
+          <div class="today-banner-item-label" data-i18n="purchase">Purchase</div>
+          <div class="today-banner-item-value" id="dash-today-pur">₹0.00</div>
+        </div>
+        <div class="today-banner-item">
+          <div class="today-banner-item-label" data-i18n="netDifference">Net</div>
+          <div class="today-banner-item-value" id="dash-today-net">₹0.00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- This Week -->
+    <div class="period-section">
+      <div class="period-section-header">
+        <span class="period-badge" data-i18n="thisWeek">This Week</span>
+      </div>
+      <div class="period-cards">
+        <div class="period-card collection-card">
+          <div class="period-card-label" data-i18n="collection">Collection</div>
+          <div class="period-card-value" id="dash-week-col">₹0.00</div>
+        </div>
+        <div class="period-card purchase-card">
+          <div class="period-card-label" data-i18n="purchase">Purchase</div>
+          <div class="period-card-value" id="dash-week-pur">₹0.00</div>
+        </div>
+        <div class="period-card profit-card">
+          <div class="period-card-label" data-i18n="profit">Profit</div>
+          <div class="period-card-value" id="dash-week-profit">₹0.00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- This Month -->
+    <div class="period-section" style="margin-bottom: var(--space-md);">
+      <div class="period-section-header">
+        <span class="period-badge" data-i18n="thisMonth">This Month</span>
+      </div>
+      <div class="period-cards">
+        <div class="period-card collection-card">
+          <div class="period-card-label" data-i18n="collection">Collection</div>
+          <div class="period-card-value" id="dash-month-col">₹0.00</div>
+        </div>
+        <div class="period-card purchase-card">
+          <div class="period-card-label" data-i18n="purchase">Purchase</div>
+          <div class="period-card-value" id="dash-month-pur">₹0.00</div>
+        </div>
+        <div class="period-card profit-card">
+          <div class="period-card-label" data-i18n="profit">Profit</div>
+          <div class="period-card-value" id="dash-month-profit">₹0.00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="section-title" data-i18n="dashboard">Dashboard</div>
+    <div class="feature-grid">
+
+      <div class="feature-card" data-nav="collection">
+        <div class="feature-icon">💰</div>
+        <div class="feature-name-en" data-i18n="collection">Collection</div>
+        <div class="feature-name-kn">ಸಂಗ್ರಹ</div>
+      </div>
+
+      <div class="feature-card" data-nav="purchase">
+        <div class="feature-icon">🛒</div>
+        <div class="feature-name-en" data-i18n="purchase">Purchase</div>
+        <div class="feature-name-kn">ಖರೀದಿ</div>
+      </div>
+
+      <div class="feature-card" data-nav="profit">
+        <div class="feature-icon">📊</div>
+        <div class="feature-name-en" data-i18n="profit">Profit</div>
+        <div class="feature-name-kn">ಲಾಭ</div>
+      </div>
+
+      <div class="feature-card" data-nav="udri">
+        <div class="feature-icon">📋</div>
+        <div class="feature-name-en" data-i18n="udri">Udri / Credit</div>
+        <div class="feature-name-kn">ಉದ್ರಿ</div>
+      </div>
+
+      <div class="feature-card" data-nav="weight-calc">
+        <div class="feature-icon">⚖️</div>
+        <div class="feature-name-en" data-i18n="weightCalc">Weight Calc</div>
+        <div class="feature-name-kn">ತೂಕ ಕ್ಯಾಲ್ಕ್</div>
+      </div>
+
+      <div class="feature-card" data-nav="amount-calc">
+        <div class="feature-icon">🧮</div>
+        <div class="feature-name-en" data-i18n="amountCalc">Amount Calc</div>
+        <div class="feature-name-kn">ಮೊತ್ತ ಕ್ಯಾಲ್ಕ್</div>
+      </div>
+
+      <div class="feature-card full-width" data-nav="notes">
+        <div class="feature-icon">📝</div>
+        <div>
+          <div class="feature-name-en" data-i18n="notes">Supplier Notes</div>
+          <div class="feature-name-kn">ಪೂರೈಕೆದಾರ ಟಿಪ್ಪಣಿ</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PAGE: COLLECTION
+       ══════════════════════════════════════════════ -->
+  <div id="page-collection" class="page">
+    <div class="page-header">
+      <button class="back-btn" data-back="dashboard">←</button>
+      <h1 data-i18n="collectionTitle">Daily Collection</h1>
+    </div>
+
+    <div class="month-nav">
+      <button id="col-prev-month" class="month-nav-btn">‹</button>
+      <span id="col-month-label" class="month-nav-label">August 2026</span>
+      <button id="col-next-month" class="month-nav-btn">›</button>
+    </div>
+
+    <div id="collection-calendar"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PAGE: PURCHASE
+       ══════════════════════════════════════════════ -->
+  <div id="page-purchase" class="page">
+    <div class="page-header">
+      <button class="back-btn" data-back="dashboard">←</button>
+      <h1 data-i18n="purchase">Purchase</h1>
+    </div>
+
+    <!-- Totals strip -->
+    <div class="purchase-totals-strip">
+      <div class="purchase-total-chip">
+        <div class="ptc-label" data-i18n="today">Today</div>
+        <div class="ptc-value" id="pur-daily-total">₹0.00</div>
+      </div>
+      <div class="purchase-total-chip">
+        <div class="ptc-label" data-i18n="thisWeek">This Week</div>
+        <div class="ptc-value" id="pur-weekly-total">₹0.00</div>
+      </div>
+      <div class="purchase-total-chip">
+        <div class="ptc-label" data-i18n="thisMonth">This Month</div>
+        <div class="ptc-value" id="pur-monthly-total">₹0.00</div>
+      </div>
+      <div class="purchase-total-chip">
+        <div class="ptc-label" data-i18n="thisYear">This Year</div>
+        <div class="ptc-value" id="pur-yearly-total">₹0.00</div>
+      </div>
+    </div>
+
+    <!-- Date selector -->
+    <div class="date-display-bar">
+      <span class="date-display-label" id="pur-date-display"></span>
+      <input type="date" id="pur-date-picker" class="date-picker-input">
+    </div>
+
+    <!-- Purchase list -->
+    <div class="purchase-list-area" id="purchase-list">
+      <div class="empty-state">
+        <div class="empty-icon">🛒</div>
+        <div class="empty-text" data-i18n="noData">No records found</div>
+      </div>
+    </div>
+
+    <!-- FAB -->
+    <button id="pur-add-btn" class="fab">+</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PAGE: PROFIT
+       ══════════════════════════════════════════════ -->
+  <div id="page-profit" class="page">
+    <div class="page-header">
+      <button class="back-btn" data-back="dashboard">←</button>
+      <h1 data-i18n="profitTitle">Profit Calculation</h1>
+    </div>
+
+    <!-- Tabs -->
+    <div class="profit-tabs">
+      <button class="profit-tab active" data-tab="week" data-i18n="week">Week</button>
+      <button class="profit-tab" data-tab="month" data-i18n="month">Month</button>
+      <button class="profit-tab" data-tab="year" data-i18n="year">Year</button>
+      <button class="profit-tab" data-tab="custom" data-i18n="custom">Custom</button>
+    </div>
+
+    <!-- Custom date range (hidden by default) -->
+    <div id="profit-custom-panel" class="custom-date-form" style="display:none;">
+      <div class="form-group" style="margin:0;">
+        <label class="form-label" data-i18n="startDate">Start Date</label>
+        <input type="date" id="profit-start-date" class="form-input">
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label class="form-label" data-i18n="endDate">End Date</label>
+        <input type="date" id="profit-end-date" class="form-input">
+      </div>
+      <button id="profit-calc-btn" class="btn-primary" data-i18n="calculate">Calculate</button>
+    </div>
+
+    <!-- Profit display -->
+    <div class="profit-display">
+      <div class="profit-period" id="profit-period-label"></div>
+
+      <div class="profit-formula">
+        <!-- Collection row -->
+        <div class="profit-row collection">
+          <span class="profit-row-label" data-i18n="collection">Collection</span>
+          <span class="profit-row-value" id="profit-col-val">₹0.00</span>
+        </div>
+
+        <div class="profit-divider">−</div>
+
+        <!-- Purchase row -->
+        <div class="profit-row purchase">
+          <span class="profit-row-label" data-i18n="purchase">Purchase</span>
+          <span class="profit-row-value" id="profit-pur-val">₹0.00</span>
+        </div>
+
+        <div class="profit-divider">=</div>
+
+        <!-- Result -->
+        <div class="profit-row result">
+          <span class="profit-row-label" data-i18n="profit">Profit</span>
+          <span class="profit-row-value" id="profit-result">₹0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="profit-stats">
+      <div class="profit-stat-card">
+        <span class="profit-stat-value" id="profit-col-days">0</span>
+        <span class="profit-stat-label" data-i18n="collectionDays">Collection Days</span>
+      </div>
+      <div class="profit-stat-card">
+        <span class="profit-stat-value" id="profit-pur-count">0</span>
+        <span class="profit-stat-label" data-i18n="purchaseCount">Purchase Records</span>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="profit-chart-container">
+      <div class="chart-title" data-i18n="collectionVsPurchase">Collection vs Purchase</div>
+      <canvas id="profit-chart" width="300" height="160"></canvas>
+    </div>
+
+    <!-- Disclaimer -->
+    <div style="padding: 0 16px 16px; font-size: 11px; color: var(--text-light); text-align: center;" data-i18n="cashOperatingProfit">
+      Cash-Based Operating Profit
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PAGE: UDRI / CREDIT
+       ══════════════════════════════════════════════ -->
+  <div id="page-udri" class="page">
+    <div class="page-header">
+      <button class="back-btn" data-back="dashboard">←</button>
+      <h1 data-i18n="udriTitle">Udri — Credit</h1>
+    </div>
+
+    <!-- Total outstanding -->
+    <div class="udri-outstanding-banner">
+      <div class="uob-label" data-i18n="totalOutstanding">Total Outstanding</div>
+      <div class="uob-value" id="udri-total-outstanding">₹0.00</div>
+    </div>
+
+    <!-- Search -->
+    <div class="udri-search-bar">
+      <input type="text" id="udri-search" class="udri-search-input"
+             data-i18n-placeholder="search" placeholder="🔍 Search customer...">
+    </div>
+
+    <!-- Customer list -->
+    <div class="udri-customer-list" id="udri-customer-list">
+      <div class="empty-state">
+        <div class="empty-icon">👤</div>
+        <div class="empty-text" data-i18n="noData">No records found</div>
+      </div>
+    </div>
+
+    <!-- FAB -->
+    <button id="udri-add-customer-btn" class="fab">+</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PAGE: CUSTOMER DETAIL
+       ══════════════════════════════════════════════ -->
+  <div id="page-customer-detail" class="page">
+    <div class="page-header">
+      <button class="back-btn" data-back="udri">←</button>
+      <h1 data-i18n="transactionHistory">Transaction History</h1>
+    </div>
+
+    <!-- Customer info -->
+    <div class="cd-header">
+      <div class="cd-avatar" id="cd-avatar">R</div>
+      <div class="cd-name" id="cd-customer-name">Customer Name</div>
+      <div class="cd-phone" id="cd-customer-phone"></div>
+    </div>
+
+    <!-- Summary -->
+    <div class="cd-summary">
+      <div class="cd-summary-row">
+        <span class="cd-summary-label" data-i18n="totalCredit">Total Credit</span>
+        <span class="cd-summary-value" id="cd-total-credit">₹0.00</span>
+      </div>
+      <div class="cd-summary-row">
+        <span class="cd-summary-label" data-i18n="totalPaid">Total Paid</span>
+        <span class="cd-summary-value" id="cd-total-paid">₹0.00</span>
+      </div>
+      <div class="cd-summary-row">
+        <span class="cd-summary-label" data-i18n="outstanding">Outstanding</span>
+        <span class="cd-outstanding-value" id="cd-outstanding">₹0.00</span>
+      </div>
+      <div class="cd-summary-row" style="justify-content: flex-end; border: none;">
+        <span class="cd-status-badge status-unpaid" id="cd-status">Unpaid</span>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="cd-action-buttons">
+      <button class="btn-danger" id="cd-add-credit-btn">
+        + <span data-i18n="addCredit">Add Credit</span>
+      </button>
+      <button class="btn-success" id="cd-add-payment-btn">
+        + <span data-i18n="addPayment">Payment</span>
+      </button>
+    </div>
+
+    <div class="cd-small-buttons">
+      <button class="btn-ghost" id="cd-edit-customer-btn">✏️ <span data-i18n="edit">Edit</span></button>
+      <button class="btn-ghost" id="cd-delete-customer-btn" style="color:var(--danger)">🗑️ <span data-i18n="delete">Delete</span></button>
+    </div>
+
+    <div class="section-title" data-i18n="transactionHistory">Transaction History</div>
+    <div id="cd-transaction-list"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PAGE: WEIGHT CALCULATOR
+       ══════════════════════════════════════════════ -->
+  <div id="page-weight-calc" class="page">
+    <div class="page-header">
+      <button class="back-btn" data-back="dashboard">←</button>
+      <h1 data-i18n="weightCalcTitle">Weight Calculator</h1>
+    </div>
+
+    <div class="calc-container">
+      <div class="calc-description">
+        ⚖️ Enter item price per kg and customer's money amount — app calculates how much weight to give.
+        <br>ಗ್ರಾಹಕ ಕೊಡುವ ಹಣದಿಂದ ತೂಕ ಲೆಕ್ಕ ಮಾಡಿ.
+      </div>
+
+      <div class="calc-card">
+        <div class="form-group">
+          <label class="form-label" data-i18n="pricePerKg">Price per Kg (₹)</label>
+          <input type="number" id="wc-price" class="form-input large-input"
+                 placeholder="₹ 0" inputmode="decimal" min="0.01" step="0.01">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" data-i18n="customerAmount">Customer Amount (₹)</label>
+          <input type="number" id="wc-amount" class="form-input large-input"
+                 placeholder="₹ 0" inputmode="decimal" min="0.01" step="0.01">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" data-i18n="roundingLabel">Rounding (grams)</label>
+          <select id="wc-rounding-select" class="form-input round-option">
+            <option value="1">Nearest 1 gram</option>
+            <option value="5">Nearest 5 grams</option>
+            <option value="10">Nearest 10 grams</option>
+          </select>
+        </div>
+
+        <div class="calc-btn-row">
+          <button id="wc-calc-btn" class="btn-primary" data-i18n="calculate">Calculate</button>
+          <button id="wc-clear-btn" class="btn-ghost" data-i18n="clear">Clear</button>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div id="wc-result-panel" class="calc-result-panel">
+        <div class="calc-result-card">
+          <div class="calc-result-sub" id="wc-result-display"></div>
+          <div class="calc-result-main" id="wc-result-grams">0 g</div>
+          <div class="calc-result-sub" id="wc-result-kg">0 kg</div>
+        </div>
+        <div class="calc-formula-box" id="wc-formula"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PAGE: AMOUNT CALCULATOR
+       ══════════════════════════════════════════════ -->
+  <div id="page-amount-calc" class="page">
+    <div class="page-header">
+      <button class="back-btn" data-back="dashboard">←</button>
+      <h1 data-i18n="amountCalcTitle">Amount Calculator</h1>
+    </div>
+
+    <div class="calc-container">
+      <div class="calc-description">
+        🧮 Enter item price per kg and weight — app calculates the price.
+        <br>ತೂಕ ಮತ್ತು ಬೆಲೆಯಿಂದ ಮೊತ್ತ ಲೆಕ್ಕ ಮಾಡಿ.
+      </div>
+
+      <div class="calc-card">
+        <div class="form-group">
+          <label class="form-label" data-i18n="pricePerKg">Price per Kg (₹)</label>
+          <input type="number" id="ac-price" class="form-input large-input"
+                 placeholder="₹ 0" inputmode="decimal" min="0.01" step="0.01">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" data-i18n="kilograms">Kg</label>
+            <input type="number" id="ac-kg" class="form-input large-input"
+                   placeholder="0" inputmode="decimal" min="0" step="0.001">
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" data-i18n="gramsOnly">Grams</label>
+            <input type="number" id="ac-grams" class="form-input large-input"
+                   placeholder="0" inputmode="decimal" min="0" step="1">
+          </div>
+        </div>
+
+        <div class="calc-btn-row" style="margin-top: var(--space-md);">
+          <button id="ac-calc-btn" class="btn-primary" data-i18n="calculate">Calculate</button>
+          <button id="ac-clear-btn" class="btn-ghost" data-i18n="clear">Clear</button>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div id="ac-result-panel" class="calc-result-panel">
+        <div class="calc-result-card">
+          <div class="calc-result-sub" id="ac-result-display"></div>
+          <div class="calc-result-main" id="ac-result-price">₹0.00</div>
+          <div class="calc-result-sub" id="ac-result-weight"></div>
+        </div>
+        <div class="calc-formula-box" id="ac-formula"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PAGE: SUPPLIER NOTES
+       ══════════════════════════════════════════════ -->
+  <div id="page-notes" class="page">
+    <div class="page-header">
+      <button class="back-btn" data-back="dashboard">←</button>
+      <h1 data-i18n="notesTitle">Supplier Notes</h1>
+    </div>
+
+    <div style="background: var(--warning-light); border: 1px solid rgba(230,126,34,0.2); border-radius: var(--radius-md); padding: 10px 16px; margin: 12px 16px; font-size: 12px; color: var(--warning); font-weight: 500;">
+      📝 Notes here do NOT affect purchase totals. These are reminders only.
+      <br>ಇಲ್ಲಿನ ಟಿಪ್ಪಣಿಗಳು ಖರೀದಿ ಮೊತ್ತವನ್ನು ಬದಲಾಯಿಸುವುದಿಲ್ಲ.
+    </div>
+
+    <!-- Search -->
+    <div class="notes-search-bar">
+      <input type="text" id="notes-search" class="notes-search-input"
+             placeholder="🔍 Search supplier...">
+    </div>
+
+    <!-- Add supplier button -->
+    <div style="padding: 0 16px 8px;">
+      <button id="notes-add-supplier-btn" class="btn-primary full-width" data-i18n="addSupplier">+ Add Supplier</button>
+    </div>
+
+    <!-- Supplier list -->
+    <div class="supplier-list" id="supplier-list"></div>
+
+    <!-- Items panel -->
+    <div id="items-panel" class="items-panel">
+      <div class="items-panel-header">
+        <h3 id="items-panel-title">Supplier Name</h3>
+        <button id="notes-add-item-btn" class="btn-ghost" style="color:white; border-color: rgba(255,255,255,0.4); font-size: 13px;" data-i18n="addItem">+ Add Item</button>
+      </div>
+      <div class="items-list" id="items-list"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PAGE: SETTINGS
+       ══════════════════════════════════════════════ -->
+  <div id="page-settings" class="page">
+    <div class="page-header">
+      <button class="back-btn" data-back="dashboard">←</button>
+      <h1 data-i18n="settingsTitle">Settings</h1>
+    </div>
+
+    <!-- Language -->
+    <div class="settings-section">
+      <div class="settings-section-title" data-i18n="language">Language</div>
+      <div class="settings-item">
+        <div class="settings-item-info">
+          <div class="settings-item-label">Language / ಭಾಷೆ</div>
+        </div>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="settings-lang" value="kn">
+            <span class="radio-label" style="font-family: var(--font-kn);">ಕನ್ನಡ</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="settings-lang" value="en" checked>
+            <span class="radio-label">English</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Currency -->
+    <div class="settings-section">
+      <div class="settings-section-title" data-i18n="currency">Currency</div>
+      <div class="settings-item">
+        <div class="settings-item-info">
+          <div class="settings-item-label">Indian Rupee</div>
+          <div class="settings-item-desc">₹ (INR) — supports paise</div>
+        </div>
+        <span style="font-size: 24px;">₹</span>
+      </div>
+      <div class="settings-item">
+        <div class="settings-item-info">
+          <div class="settings-item-label" data-i18n="weekStarts">Week Starts</div>
+        </div>
+        <span style="font-size: 14px; font-weight: 700; color: var(--text-secondary);" data-i18n="monday">Monday</span>
+      </div>
+    </div>
+
+    <!-- Weight rounding -->
+    <div class="settings-section">
+      <div class="settings-section-title" data-i18n="weightRounding">Weight Rounding</div>
+      <div class="settings-item" style="flex-wrap: wrap; gap: 12px;">
+        <div class="settings-item-info">
+          <div class="settings-item-label" data-i18n="weightRounding">Weight Rounding</div>
+          <div class="settings-item-desc">For weight calculator</div>
+        </div>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="settings-rounding" value="1" checked>
+            <span class="radio-label">1g</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="settings-rounding" value="5">
+            <span class="radio-label">5g</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="settings-rounding" value="10">
+            <span class="radio-label">10g</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Backup & Restore -->
+    <div class="settings-section">
+      <div class="settings-section-title">Data / ಡೇಟಾ</div>
+      <div class="settings-item">
+        <div class="settings-item-info">
+          <div class="settings-item-label" data-i18n="backupData">Backup Data</div>
+          <div class="settings-item-desc">Download JSON backup file</div>
+        </div>
+        <button class="settings-btn" id="settings-backup-btn" data-i18n="backupData">Backup</button>
+      </div>
+      <div class="settings-item">
+        <div class="settings-item-info">
+          <div class="settings-item-label" data-i18n="restoreData">Restore Data</div>
+          <div class="settings-item-desc">Import from JSON backup file</div>
+        </div>
+        <button class="settings-btn" id="settings-restore-btn" data-i18n="restoreData">Restore</button>
+      </div>
+      <div class="settings-item">
+        <div class="settings-item-info">
+          <div class="settings-item-label danger" style="color:var(--danger)" data-i18n="clearData">Clear All Data</div>
+          <div class="settings-item-desc" data-i18n="clearData">Permanently delete all records</div>
+        </div>
+        <button class="settings-btn danger" id="settings-clear-btn">Clear</button>
+      </div>
+    </div>
+
+    <!-- Warning -->
+    <div class="settings-warning" data-i18n="backupWarning">
+      ⚠️ Deleting browser data without backup will erase all records permanently.
+    </div>
+
+    <!-- App Info -->
+    <div style="text-align: center; padding: 20px 16px; color: var(--text-light); font-size: 12px;">
+      Mahalingeshwar Kirani Store App v1.0<br>
+      ಮಹಾಲಿಂಗೇಶ್ವರ ಕಿರಾಣಿ ಸ್ಟೋರ್
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       BOTTOM NAVIGATION
+       ══════════════════════════════════════════════ -->
+  <nav id="bottom-nav">
+    <button class="nav-item active" data-page="dashboard">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label" data-i18n="dashboard">Home</span>
+    </button>
+    <button class="nav-item" data-page="collection">
+      <span class="nav-icon">💰</span>
+      <span class="nav-label" data-i18n="collection">Sales</span>
+    </button>
+    <button class="nav-item" data-page="purchase">
+      <span class="nav-icon">🛒</span>
+      <span class="nav-label" data-i18n="purchase">Purchase</span>
+    </button>
+    <button class="nav-item" data-page="udri">
+      <span class="nav-icon">📋</span>
+      <span class="nav-label" data-i18n="udri">Udri</span>
+    </button>
+    <button class="nav-item" data-page="settings">
+      <span class="nav-icon">⚙️</span>
+      <span class="nav-label" data-i18n="settings">Settings</span>
+    </button>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════
+       BOTTOM SHEET MODAL
+       ══════════════════════════════════════════════ -->
+  <div id="bottom-sheet">
+    <div class="sheet-backdrop"></div>
+    <div class="sheet-content">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h2 id="sheet-title"></h2>
+        <button id="sheet-close">✕</button>
+      </div>
+      <div id="sheet-body"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       CONFIRM OVERLAY
+       ══════════════════════════════════════════════ -->
+  <div id="confirm-overlay">
+    <div class="confirm-box">
+      <p id="confirm-message"></p>
+      <div class="confirm-actions">
+        <button id="confirm-no" class="btn-ghost">Cancel</button>
+        <button id="confirm-yes" class="btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+
+<!-- ══════════════════════════════════════════════
+     JAVASCRIPT (ES Modules)
+     ══════════════════════════════════════════════ -->
+<script type="module">
+  import { openDB } from './js/db.js';
+  import { loadLanguage, applyTranslations } from './js/i18n.js';
+  import { initApp, showPage } from './js/app.js';
+  import { initDashboard, refreshDashboard } from './js/dashboard.js';
+  import { initCollection } from './js/collection.js';
+  import { initPurchase } from './js/purchase.js';
+  import { initProfit } from './js/profit.js';
+  import { initUdri, initCustomerDetail } from './js/udri.js';
+  import { initWeightCalc } from './js/weight-calc.js';
+  import { initAmountCalc } from './js/amount-calc.js';
+  import { initNotes } from './js/notes.js';
+  import { initSettings } from './js/settings.js';
+
+  // ─── Boot ──────────────────────────────────────
+  await openDB();
+  loadLanguage();
+  applyTranslations();
+
+  // Register service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(console.error);
+  }
+
+  // ─── App init (router, nav, language chooser) ──
+  await initApp();
+
+  // ─── Page change handler ───────────────────────
+  window.addEventListener('pageChange', async e => {
+    const { page, params } = e.detail;
+    applyTranslations();
+
+    switch(page) {
+      case 'dashboard':
+        await initDashboard();
+        break;
+      case 'collection':
+        await initCollection();
+        break;
+      case 'purchase':
+        await initPurchase();
+        break;
+      case 'profit':
+        await initProfit();
+        // Show/hide custom panel
+        document.querySelectorAll('.profit-tab').forEach(tab => {
+          tab.addEventListener('click', () => {
+            const panel = document.getElementById('profit-custom-panel');
+            if (panel) panel.style.display = tab.getAttribute('data-tab') === 'custom' ? 'grid' : 'none';
+          });
+        });
+        break;
+      case 'udri':
+        await initUdri();
+        break;
+      case 'customer-detail':
+        await initCustomerDetail();
+        break;
+      case 'weight-calc':
+        await initWeightCalc();
+        break;
+      case 'amount-calc':
+        initAmountCalc();
+        break;
+      case 'notes':
+        await initNotes();
+        break;
+      case 'settings':
+        await initSettings();
+        break;
+    }
+  });
+
+  // ─── Load dashboard on first boot ─────────────
+  const lang = localStorage.getItem('mk_lang');
+  if (lang) {
+    await initDashboard();
+  }
+</script>
+</body>
+</html>
