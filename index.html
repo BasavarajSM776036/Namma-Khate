@@ -17,21 +17,7 @@
 
 <div id="app">
 
-  <!-- ══════════════════════════════════════════════
-       PAGE: LANGUAGE CHOOSER
-       ══════════════════════════════════════════════ -->
-  <div id="page-language-chooser" class="page active">
-    <div class="lang-chooser-logo">
-      <div class="lang-chooser-shop-icon">🛒</div>
-      <div class="lang-chooser-title">MAHALINGESHWAR KIRANI STORE</div>
-      <div class="lang-chooser-subtitle">ಮಹಾಲಿಂಗೇಶ್ವರ ಕಿರಾಣಿ ಸ್ಟೋರ್</div>
-    </div>
-    <p class="lang-chooser-prompt">ಭಾಷೆ ಆಯ್ಕೆ ಮಾಡಿ / Choose Language</p>
-    <div class="lang-chooser-buttons">
-      <button id="btn-lang-kn" class="lang-btn lang-btn-kn">ಕನ್ನಡ</button>
-      <button id="btn-lang-en" class="lang-btn lang-btn-en">English</button>
-    </div>
-  </div>
+  <!-- Language Chooser Removed -->
 
   <!-- ══════════════════════════════════════════════
        PAGE: DASHBOARD
@@ -47,6 +33,56 @@
         </div>
         <button class="lang-switch">ಕನ್ನಡ</button>
       </div>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="section-title" data-i18n="dashboard" style="padding-top: 16px;">Dashboard</div>
+    <div class="feature-grid">
+
+      <div class="feature-card" data-nav="collection">
+        <div class="feature-icon">💰</div>
+        <div class="feature-name-en" data-i18n="collection">Collection</div>
+        <div class="feature-name-kn">ಸಂಗ್ರಹ</div>
+      </div>
+
+      <div class="feature-card" data-nav="purchase">
+        <div class="feature-icon">🛒</div>
+        <div class="feature-name-en" data-i18n="purchase">Purchase</div>
+        <div class="feature-name-kn">ಖರೀದಿ</div>
+      </div>
+
+      <div class="feature-card" data-nav="profit">
+        <div class="feature-icon">📊</div>
+        <div class="feature-name-en" data-i18n="profit">Profit</div>
+        <div class="feature-name-kn">ಲಾಭ</div>
+      </div>
+
+      <div class="feature-card" data-nav="udri">
+        <div class="feature-icon">📋</div>
+        <div class="feature-name-en" data-i18n="udri">Udri / Credit</div>
+        <div class="feature-name-kn">ಉದ್ರಿ</div>
+      </div>
+
+      <div class="feature-card" data-nav="weight-calc">
+        <div class="feature-icon">⚖️</div>
+        <div class="feature-name-en" data-i18n="weightCalc">Weight Calc</div>
+        <div class="feature-name-kn">ತೂಕ ಕ್ಯಾಲ್ಕ್</div>
+      </div>
+
+      <div class="feature-card" data-nav="amount-calc">
+        <div class="feature-icon">🧮</div>
+        <div class="feature-name-en" data-i18n="amountCalc">Amount Calc</div>
+        <div class="feature-name-kn">ಮೊತ್ತ ಕ್ಯಾಲ್ಕ್</div>
+      </div>
+
+      <div class="feature-card full-width" data-nav="notes">
+        <div class="feature-icon">📝</div>
+        <div>
+          <div class="feature-name-en" data-i18n="notes">Supplier Notes</div>
+          <div class="feature-name-kn">ಪೂರೈಕೆದಾರ ಟಿಪ್ಪಣಿ</div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Today Summary -->
@@ -108,56 +144,6 @@
           <div class="period-card-value" id="dash-month-profit">₹0.00</div>
         </div>
       </div>
-    </div>
-
-    <!-- Feature Cards -->
-    <div class="section-title" data-i18n="dashboard">Dashboard</div>
-    <div class="feature-grid">
-
-      <div class="feature-card" data-nav="collection">
-        <div class="feature-icon">💰</div>
-        <div class="feature-name-en" data-i18n="collection">Collection</div>
-        <div class="feature-name-kn">ಸಂಗ್ರಹ</div>
-      </div>
-
-      <div class="feature-card" data-nav="purchase">
-        <div class="feature-icon">🛒</div>
-        <div class="feature-name-en" data-i18n="purchase">Purchase</div>
-        <div class="feature-name-kn">ಖರೀದಿ</div>
-      </div>
-
-      <div class="feature-card" data-nav="profit">
-        <div class="feature-icon">📊</div>
-        <div class="feature-name-en" data-i18n="profit">Profit</div>
-        <div class="feature-name-kn">ಲಾಭ</div>
-      </div>
-
-      <div class="feature-card" data-nav="udri">
-        <div class="feature-icon">📋</div>
-        <div class="feature-name-en" data-i18n="udri">Udri / Credit</div>
-        <div class="feature-name-kn">ಉದ್ರಿ</div>
-      </div>
-
-      <div class="feature-card" data-nav="weight-calc">
-        <div class="feature-icon">⚖️</div>
-        <div class="feature-name-en" data-i18n="weightCalc">Weight Calc</div>
-        <div class="feature-name-kn">ತೂಕ ಕ್ಯಾಲ್ಕ್</div>
-      </div>
-
-      <div class="feature-card" data-nav="amount-calc">
-        <div class="feature-icon">🧮</div>
-        <div class="feature-name-en" data-i18n="amountCalc">Amount Calc</div>
-        <div class="feature-name-kn">ಮೊತ್ತ ಕ್ಯಾಲ್ಕ್</div>
-      </div>
-
-      <div class="feature-card full-width" data-nav="notes">
-        <div class="feature-icon">📝</div>
-        <div>
-          <div class="feature-name-en" data-i18n="notes">Supplier Notes</div>
-          <div class="feature-name-kn">ಪೂರೈಕೆದಾರ ಟಿಪ್ಪಣಿ</div>
-        </div>
-      </div>
-
     </div>
   </div>
 

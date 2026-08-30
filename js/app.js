@@ -111,10 +111,10 @@ export function closeBottomSheet() {
 
 export async function initLanguage() {
   await openDB();
-  const lang = localStorage.getItem('mk_lang');
+  let lang = localStorage.getItem('mk_lang');
   if (!lang) {
-    showPage('language-chooser');
-    return;
+    lang = 'en';
+    localStorage.setItem('mk_lang', lang);
   }
   setLanguage(lang);
   applyTranslations();
@@ -179,11 +179,12 @@ export async function initApp() {
   });
 
   // Determine start page
-  const lang = localStorage.getItem('mk_lang');
-  if (lang) {
-    showPage('dashboard');
-  } else {
-    showPage('language-chooser');
-    document.getElementById('bottom-nav').style.display = 'none';
+  let lang = localStorage.getItem('mk_lang');
+  if (!lang) {
+    lang = 'en';
+    localStorage.setItem('mk_lang', lang);
+    setSetting('language', lang);
+    applyTranslations();
   }
+  showPage('dashboard');
 }
