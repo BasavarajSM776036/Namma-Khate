@@ -2213,3 +2213,125 @@ body {
   .period-card-value { font-size: 11px; }
   .calc-result-main { font-size: 42px; }
 }
+
+/* ─── SPLASH SCREEN ANIMATIONS ─── */
+.splash-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, var(--primary) 0%, #D8551A 100%);
+  color: #ffffff;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.splash-content {
+  text-align: center;
+  animation: floatUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.splash-icon-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.splash-icon {
+  font-size: 80px;
+  animation: cartBounce 1.5s ease-in-out infinite alternate;
+}
+
+.splash-sparkle {
+  position: absolute;
+  font-size: 24px;
+  opacity: 0;
+}
+
+.sparkle-1 {
+  top: -10px;
+  left: -20px;
+  animation: sparkleTwinkle 2s ease-in-out infinite 0.2s;
+}
+
+.sparkle-2 {
+  top: 10px;
+  right: -20px;
+  animation: sparkleTwinkle 2s ease-in-out infinite 0.7s;
+}
+
+.splash-shop-name {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.splash-shop-sub {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  opacity: 0.9;
+  margin-bottom: 10px;
+}
+
+.splash-shop-kn {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 40px;
+}
+
+.splash-loader {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255,255,255,0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: spin 1s linear infinite;
+}
+
+.splash-credit {
+  position: absolute;
+  bottom: 30px;
+  text-align: center;
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out 0.5s forwards;
+}
+
+.splash-credit-text {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.splash-credit-name {
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(40px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes cartBounce {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.05); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.2) rotate(15deg); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}

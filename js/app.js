@@ -186,5 +186,13 @@ export async function initApp() {
     setSetting('language', lang);
     applyTranslations();
   }
-  showPage('dashboard');
+  
+  // Show premium splash screen
+  showPage('splash');
+  document.getElementById('bottom-nav').style.display = 'none';
+  
+  setTimeout(() => {
+    showPage('dashboard');
+    document.getElementById('bottom-nav').style.display = 'flex';
+  }, 2500);
 }
