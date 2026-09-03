@@ -9,7 +9,7 @@ import {
   getRangeCollection, getWeeklyCollection, getMonthlyCollection, getYearlyCollection,
   todayStr, fromDateStr, toDateStr
 } from './calc.js';
-import { getCollectionsInRange, saveCollection, getCollectionByDate } from './db.js';
+import { getCollectionsInRange, saveCollection, getCollectionByDate } from './db.local.js';
 import { showToast, showBottomSheet, closeBottomSheet } from './app.js';
 
 let currentYear = new Date().getFullYear();

@@ -7,7 +7,7 @@ import { t } from './i18n.js';
 import {
   getAllSuppliers, addSupplier, updateSupplier, deleteSupplier,
   getItemsBySupplier, addSupplierItem, updateSupplierItem, deleteSupplierItem
-} from './db.js';
+} from './db.local.js';
 import { showToast, showConfirm, showBottomSheet, closeBottomSheet } from './app.js';
 
 let selectedSupplierId = null;

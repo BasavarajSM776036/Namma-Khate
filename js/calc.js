@@ -10,7 +10,7 @@ import {
   getCreditsByCustomer,
   getPaymentsByCustomer,
   getAllCustomers
-} from './db.js';
+} from './db.local.js';
 
 // ─── Date Utilities ────────────────────────────────────────────────────────
 

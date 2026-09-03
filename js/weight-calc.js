@@ -5,7 +5,7 @@
 
 import { t } from './i18n.js';
 import { calculateWeight } from './calc.js';
-import { getSetting } from './db.js';
+import { getSetting } from './db.local.js';
 
 let rounding = 1; // default: nearest 1 gram
 

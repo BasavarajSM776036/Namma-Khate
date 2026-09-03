@@ -11,7 +11,7 @@ import {
 import {
   getPurchasesByDate, addPurchase, updatePurchase, deletePurchase,
   getPurchasesInRange
-} from './db.js';
+} from './db.local.js';
 import { showToast, showConfirm, showBottomSheet, closeBottomSheet } from './app.js';
 
 let selectedDate = todayStr();
@@ -25,17 +25,24 @@ export async function initPurchase() {
 
 function setupDatePicker() {
   const picker = document.getElementById('pur-date-picker');
-  if (picker) {
+  if (picker && !picker._hasListener) {
+    picker._hasListener = true;
     picker.value = selectedDate;
     picker.addEventListener('change', async () => {
       selectedDate = picker.value;
       await renderPurchasePage();
     });
+  } else if (picker) {
+    picker.value = selectedDate;
   }
 }
 
 function setupAddBtn() {
-  document.getElementById('pur-add-btn')?.addEventListener('click', () => openPurchaseForm(null));
+  const btn = document.getElementById('pur-add-btn');
+  if (btn && !btn._hasListener) {
+    btn._hasListener = true;
+    btn.addEventListener('click', () => openPurchaseForm(null));
+  }
 }
 
 async function renderPurchasePage() {

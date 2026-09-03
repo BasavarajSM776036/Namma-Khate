@@ -21,17 +21,54 @@
        PAGE: SPLASH SCREEN
        ══════════════════════════════════════════════ -->
   <div id="page-splash" class="page active splash-container">
+    <div class="splash-bg-glow"></div>
+
+    <!-- Floating particles -->
+    <div class="splash-particles">
+      <span class="splash-particle p1">✦</span>
+      <span class="splash-particle p2">✦</span>
+      <span class="splash-particle p3">✦</span>
+      <span class="splash-particle p4">✦</span>
+      <span class="splash-particle p5">✦</span>
+    </div>
+
     <div class="splash-content">
+      <!-- Logo -->
       <div class="splash-icon-wrapper">
-        <div class="splash-icon">🛒</div>
+        <div class="splash-ring"></div>
+        <div class="splash-ring splash-ring-2"></div>
+        <div class="splash-icon">
+          <img src="./icons/store-logo.jpg" alt="Mahalingeshwar Kirani Store Logo" class="premium-logo" />
+        </div>
         <div class="splash-sparkle sparkle-1">✨</div>
         <div class="splash-sparkle sparkle-2">✨</div>
+        <div class="splash-sparkle sparkle-3">⭐</div>
       </div>
+
+      <!-- Store Name -->
       <div class="splash-shop-name">MAHALINGESHWAR</div>
       <div class="splash-shop-sub">KIRANI STORE</div>
-      
-      <div class="splash-loader"></div>
+      <div class="splash-location">📍 Shindikurbet</div>
+
+      <!-- Animated bars -->
+      <div class="splash-pulse-bars">
+        <span class="pulse-bar"></span>
+        <span class="pulse-bar"></span>
+        <span class="pulse-bar"></span>
+        <span class="pulse-bar"></span>
+        <span class="pulse-bar"></span>
+      </div>
+
+      <div class="splash-tagline">Your Smart Shop Manager</div>
+
+      <!-- Go to Dashboard Button -->
+      <button class="splash-goto-btn" id="splash-goto-dashboard">
+        <span class="splash-goto-icon">🏪</span>
+        <span class="splash-goto-text">Go to Dashboard</span>
+        <span class="splash-goto-arrow">→</span>
+      </button>
     </div>
+
     <div class="splash-credit">
       <span class="splash-credit-text">Developed by</span><br>
       <span class="splash-credit-name">Basavaraj S M</span>
@@ -53,8 +90,17 @@
       </div>
     </div>
 
+    <!-- Quick Access CTA -->
+    <div class="cta-section">
+      <button class="cta-explore-btn" id="cta-explore-btn" onclick="document.getElementById('feature-grid-section').scrollIntoView({behavior:'smooth'})">
+        <span class="cta-btn-icon">✨</span>
+        <span class="cta-btn-text">All Features</span>
+        <span class="cta-btn-arrow">↓</span>
+      </button>
+    </div>
+
     <!-- Feature Cards -->
-    <div class="section-title" data-i18n="dashboard" style="padding-top: 16px;">Dashboard</div>
+    <div class="section-title" data-i18n="dashboard" style="padding-top: 16px;" id="feature-grid-section">Dashboard</div>
     <div class="feature-grid">
 
       <div class="feature-card" data-nav="collection">
@@ -722,11 +768,19 @@
 
 </div><!-- /#app -->
 
+<script>
+  if (!localStorage.getItem('wiped_v3_demo')) {
+    indexedDB.deleteDatabase('MKStoreDB');
+    localStorage.setItem('wiped_v3_demo', '1');
+    console.log("WIPED DB for fresh start");
+  }
+</script>
+
 <!-- ══════════════════════════════════════════════
      JAVASCRIPT (ES Modules)
      ══════════════════════════════════════════════ -->
 <script type="module">
-  import { openDB } from './js/db.js';
+  import { openDB } from './js/db.local.js';
   import { loadLanguage, applyTranslations } from './js/i18n.js';
   import { initApp, showPage } from './js/app.js';
   import { initDashboard, refreshDashboard } from './js/dashboard.js';
@@ -739,15 +793,19 @@
   import { initNotes } from './js/notes.js';
   import { initSettings } from './js/settings.js';
 
-  // ─── Boot ──────────────────────────────────────
-  await openDB();
+  // ─── Boot (with timeout safety) ──────────────
+  try {
+    await Promise.race([
+      openDB(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('DB timeout')), 3000))
+    ]);
+  } catch (e) {
+    console.warn('DB init warning (continuing):', e);
+  }
   loadLanguage();
   applyTranslations();
 
-  // Register service worker
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js').catch(console.error);
-  }
+  // Service worker registration handled by initApp()
 
   // ─── App init (router, nav, language chooser) ──
   await initApp();
@@ -798,11 +856,7 @@
     }
   });
 
-  // ─── Load dashboard on first boot ─────────────
-  const lang = localStorage.getItem('mk_lang');
-  if (lang) {
-    await initDashboard();
-  }
+  // Dashboard is initialized via the pageChange event fired by showPage('dashboard') in initApp()
 </script>
 </body>
 </html>

@@ -9,7 +9,7 @@ import {
   getAllCustomers, addCustomer, updateCustomer, deleteCustomer,
   getCreditsByCustomer, addCredit, deleteCredit,
   getPaymentsByCustomer, addPayment
-} from './db.js';
+} from './db.local.js';
 import { showToast, showConfirm, showBottomSheet, closeBottomSheet, showPage } from './app.js';
 
 let currentCustomerId = null;
@@ -17,7 +17,11 @@ let currentCustomerId = null;
 export async function initUdri() {
   await renderUdriDashboard();
   setupUdriSearch();
-  document.getElementById('udri-add-customer-btn')?.addEventListener('click', openAddCustomerForm);
+  const addBtn = document.getElementById('udri-add-customer-btn');
+  if (addBtn && !addBtn._hasListener) {
+    addBtn._hasListener = true;
+    addBtn.addEventListener('click', openAddCustomerForm);
+  }
 }
 
 async function renderUdriDashboard() {

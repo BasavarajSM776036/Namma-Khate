@@ -9,7 +9,29 @@ import { showPage } from './app.js';
 export async function initDashboard() {
   updateHeader();
   await loadSummary();
+  wireCTAButton();
 }
+
+function wireCTAButton() {
+  const btn = document.getElementById('cta-explore-btn');
+  if (btn && !btn._wired) {
+    btn._wired = true;
+    btn.addEventListener('click', () => {
+      // Trigger click animation
+      btn.classList.add('cta-click-anim');
+      
+      // Delay scroll to let animation play
+      setTimeout(() => {
+        btn.classList.remove('cta-click-anim');
+        const target = document.getElementById('feature-grid-section');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 500);
+    });
+  }
+}
+
 
 function updateHeader() {
   const today = new Date();

@@ -3,7 +3,7 @@
  */
 
 import { t, setLanguage, applyTranslations } from './i18n.js';
-import { getSetting, setSetting, exportAllData, importAllData, clearAllData } from './db.js';
+import { getSetting, setSetting, exportAllData, importAllData, clearAllData } from './db.local.js';
 import { showToast, showConfirm } from './app.js';
 
 export async function initSettings() {
@@ -85,11 +85,11 @@ function setupSettingsHandlers() {
 
   // Clear all data
   document.getElementById('settings-clear-btn')?.addEventListener('click', () => {
-    showConfirm(t('clearConfirm'), async () => {
-      // Double confirm via second prompt
-      showConfirm('⚠️ ' + t('clearConfirm'), async () => {
+    showConfirm('⚠️ This will DELETE all records permanently. Are you sure?', async () => {
+      showConfirm('⚠️ Final warning! All data will be lost. Confirm?', async () => {
         await clearAllData();
-        showToast(t('deletedSuccess'));
+        showToast('All data cleared! Reloading...', 'success', 2000);
+        setTimeout(() => window.location.reload(), 2000);
       });
     });
   });

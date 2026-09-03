@@ -1,9 +1,9 @@
-const CACHE_NAME = 'mk-store-v2';
+const CACHE_NAME = 'mk-store-v5';
 const ASSETS = [
   './',
   './index.html',
   './css/main.css',
-  './js/db.js',
+  './js/db.local.js',
   './js/i18n.js',
   './js/calc.js',
   './js/app.js',
