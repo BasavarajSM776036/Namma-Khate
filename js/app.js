@@ -5,6 +5,63 @@
 import { openDB, getSetting, setSetting, clearAllData } from './db.local.js';
 import { t, loadLanguage, setLanguage, applyTranslations } from './i18n.js';
 
+// ─── PWA Install Prompt ────────────────────────────────────────────────────
+let _deferredInstallPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  _deferredInstallPrompt = e;
+  showInstallBanner();
+});
+
+window.addEventListener('appinstalled', () => {
+  _deferredInstallPrompt = null;
+  hideInstallBanner();
+  showToast('App installed! Open from your home screen 🎉', 'success', 4000);
+});
+
+function showInstallBanner() {
+  let banner = document.getElementById('pwa-install-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'pwa-install-banner';
+    banner.innerHTML = `
+      <div class="pwa-banner-icon">📲</div>
+      <div class="pwa-banner-text">
+        <div class="pwa-banner-title">Install MK Store</div>
+        <div class="pwa-banner-sub">Add to Home Screen & use offline</div>
+      </div>
+      <button id="pwa-install-btn" class="pwa-install-btn">Install</button>
+      <button id="pwa-dismiss-btn" class="pwa-dismiss-btn">✕</button>
+    `;
+    document.body.appendChild(banner);
+
+    document.getElementById('pwa-install-btn').addEventListener('click', async () => {
+      if (!_deferredInstallPrompt) return;
+      _deferredInstallPrompt.prompt();
+      const { outcome } = await _deferredInstallPrompt.userChoice;
+      if (outcome === 'accepted') {
+        _deferredInstallPrompt = null;
+        hideInstallBanner();
+      }
+    });
+
+    document.getElementById('pwa-dismiss-btn').addEventListener('click', () => {
+      hideInstallBanner();
+      sessionStorage.setItem('pwa_banner_dismissed', '1');
+    });
+  }
+  // Don't show if user dismissed in this session
+  if (!sessionStorage.getItem('pwa_banner_dismissed')) {
+    banner.classList.add('visible');
+  }
+}
+
+function hideInstallBanner() {
+  const banner = document.getElementById('pwa-install-banner');
+  if (banner) banner.classList.remove('visible');
+}
+
 // ─── Router ────────────────────────────────────────────────────────────────
 
 const pages = ['splash','language-chooser','dashboard','collection','purchase','profit','udri','customer-detail','weight-calc','amount-calc','notes','settings'];
@@ -168,15 +225,13 @@ export async function initApp() {
   showPage('splash', {}, true);
   document.getElementById('bottom-nav').style.display = 'none';
 
-  // ─── Background: Service Worker, DB, Data wipe ────────────────
+  // ─── Background: Service Worker ───────────────────────────────
+  // Register once — do NOT unregister every time (breaks PWA installability)
   if ('serviceWorker' in navigator) {
-    const regs = await navigator.serviceWorker.getRegistrations();
-    for (const reg of regs) {
-      // Unregister and re-register fresh SW
-      await reg.unregister();
-    }
-    // Re-register the updated service worker
-    navigator.serviceWorker.register('./sw.js').catch(console.error);
+    navigator.serviceWorker.register('./sw.js').then(reg => {
+      // Check for SW updates silently in background
+      reg.update();
+    }).catch(console.error);
   }
 
   // Open DB with a timeout so we never hang on splash
