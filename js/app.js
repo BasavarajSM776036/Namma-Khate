@@ -137,6 +137,13 @@ export async function initApp() {
     const nav = document.getElementById('bottom-nav');
     if (nav) nav.style.display = 'flex';
     showPage('dashboard');
+    // Scroll to feature cards so all options are visible immediately
+    setTimeout(() => {
+      const featureSection = document.getElementById('feature-grid-section');
+      if (featureSection) {
+        featureSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 120);
   };
 
   const gotoBtn = document.getElementById('splash-goto-dashboard');
