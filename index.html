@@ -88,7 +88,10 @@
           <div class="dash-shop-name-kn">ಮಹಾಲಿಂಗೇಶ್ವರ ಕಿರಾಣಿ ಸ್ಟೋರ್</div>
           <div class="dash-date" id="dash-date"></div>
         </div>
-        <button class="lang-switch">ಕನ್ನಡ</button>
+        <div class="dash-header-actions" style="display: flex; gap: 8px; align-items: center;">
+          <button class="lang-switch">ಕನ್ನಡ</button>
+          <button class="header-icon-btn" data-nav="settings" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 10px; font-size: 16px; cursor: pointer; color: white;">⚙️</button>
+        </div>
       </div>
     </div>
 
@@ -147,6 +150,15 @@
           <div class="feature-name-en" data-i18n="notes">Supplier Notes</div>
           <div class="feature-name-kn">ಪೂರೈಕೆದಾರ ಟಿಪ್ಪಣಿ</div>
         </div>
+      </div>
+
+      <div class="feature-card full-width grocery-feature-card" data-nav="grocery">
+        <div class="feature-icon">🛍️</div>
+        <div>
+          <div class="feature-name-en">Grocery Items</div>
+          <div class="feature-name-kn">ಕಿರಾಣಿ ವಸ್ತುಗಳು</div>
+        </div>
+        <span class="feature-badge-new">NEW</span>
       </div>
 
     </div>
@@ -715,6 +727,160 @@
   </div>
 
   <!-- ══════════════════════════════════════════════
+       PAGE: GROCERY ITEMS / ಕಿರಾಣಿ ವಸ್ತುಗಳು
+       ══════════════════════════════════════════════ -->
+  <div id="page-grocery" class="page">
+    <div class="page-header grocery-page-header">
+      <button class="back-btn" data-back="dashboard">←</button>
+      <div class="grocery-header-titles">
+        <h1>Grocery Items</h1>
+        <div class="grocery-header-kn">ಕಿರಾಣಿ ವಸ್ತುಗಳು</div>
+      </div>
+      <button id="grocery-add-btn" class="grocery-top-add-btn">+ Add Item</button>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="grocery-stats-bar">
+      <div class="grocery-stat-chip">
+        <span class="grocery-stat-num" id="grocery-stat-total">0</span>
+        <span class="grocery-stat-lbl">Total</span>
+      </div>
+      <div class="grocery-stat-chip instock-chip">
+        <span class="grocery-stat-num" id="grocery-stat-instock">0</span>
+        <span class="grocery-stat-lbl">✓ In Stock</span>
+      </div>
+      <div class="grocery-stat-chip outstock-chip">
+        <span class="grocery-stat-num" id="grocery-stat-outofstock">0</span>
+        <span class="grocery-stat-lbl">✗ Out of Stock</span>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="grocery-search-wrap">
+      <span class="grocery-search-icon">🔍</span>
+      <input type="text" id="grocery-search" class="grocery-search-input" placeholder="Search items / ವಸ್ತು ಹುಡುಕಿ...">
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="grocery-filter-row">
+      <div class="grocery-filter-tabs">
+        <button class="grocery-filter-tab active" data-filter="all">All</button>
+        <button class="grocery-filter-tab" data-filter="instock">✓ In Stock</button>
+        <button class="grocery-filter-tab" data-filter="outofstock">✗ Out of Stock</button>
+      </div>
+      <select id="grocery-cat-filter" class="grocery-cat-select">
+        <option value="all">All Categories</option>
+        <option value="rice">🍚 Rice / ಅಕ್ಕಿ</option>
+        <option value="dal">🫘 Dal / ಬೇಳೆ</option>
+        <option value="flour">🌾 Flour / ಹಿಟ್ಟು</option>
+        <option value="oil">🫙 Oil / ಎಣ್ಣೆ</option>
+        <option value="sweetener">🍬 Sugar / ಸಕ್ಕರೆ</option>
+        <option value="spices">🌶️ Spices / ಮಸಾಲೆ</option>
+        <option value="beverages">☕ Tea/Coffee / ಚಹಾ</option>
+        <option value="grains">🌽 Grains / ಧಾನ್ಯ</option>
+        <option value="household">🧹 Household / ಗೃಹ</option>
+        <option value="packed">📦 Packed / ಪ್ಯಾಕ್</option>
+        <option value="dryfruits">🥜 Dry Fruits / ಒಣ ಹಣ್ಣು</option>
+        <option value="daily">🕯️ Daily Use / ದೈನಂದಿನ</option>
+      </select>
+    </div>
+
+    <!-- Market Rate Note -->
+    <div class="grocery-market-note">
+      <span class="grocery-market-note-icon">ℹ️</span>
+      <span>Market rates — Karnataka retail avg (Sep 2026, Dept. of Consumer Affairs). "Daily varies" = prices change daily.</span>
+    </div>
+
+    <!-- Main List -->
+    <div id="grocery-list-container" class="grocery-list-container"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       GROCERY ITEM MODAL
+       ══════════════════════════════════════════════ -->
+  <div id="grocery-modal-overlay" class="grocery-modal-overlay"></div>
+  <div id="grocery-item-modal" class="grocery-item-modal">
+    <div class="gm-header">
+      <h2 id="grocery-modal-title">Add Item</h2>
+      <button id="gm-close-btn" class="gm-close-btn">✕</button>
+    </div>
+    <div class="gm-body">
+      <input type="hidden" id="gm-item-id">
+
+      <div class="gm-form-group">
+        <label class="gm-label">Item Name (English) *</label>
+        <input type="text" id="gm-name-en" class="gm-input" placeholder="e.g. Sona Masoori Rice">
+      </div>
+
+      <div class="gm-form-group">
+        <label class="gm-label">Item Name (ಕನ್ನಡ)</label>
+        <input type="text" id="gm-name-kn" class="gm-input" placeholder="ಉದಾ: ಸೋನಾ ಮಸೂರಿ ಅಕ್ಕಿ" style="font-family: var(--font-kn, sans-serif)">
+      </div>
+
+      <div class="gm-row">
+        <div class="gm-form-group">
+          <label class="gm-label">Category</label>
+          <select id="gm-category" class="gm-input">
+            <option value="rice">🍚 Rice / ಅಕ್ಕಿ</option>
+            <option value="dal">🫘 Dal / ಬೇಳೆ</option>
+            <option value="flour">🌾 Flour / ಹಿಟ್ಟು</option>
+            <option value="oil">🫙 Oil / ಎಣ್ಣೆ</option>
+            <option value="sweetener">🍬 Sugar / ಸಕ್ಕರೆ</option>
+            <option value="spices">🌶️ Spices / ಮಸಾಲೆ</option>
+            <option value="beverages">☕ Tea/Coffee</option>
+            <option value="grains">🌽 Grains / ಧಾನ್ಯ</option>
+            <option value="household">🧹 Household / ಗೃಹ</option>
+            <option value="packed">📦 Packed / ಪ್ಯಾಕ್</option>
+            <option value="dryfruits">🥜 Dry Fruits</option>
+            <option value="daily">🕯️ Daily Use</option>
+          </select>
+        </div>
+        <div class="gm-form-group">
+          <label class="gm-label">Unit</label>
+          <select id="gm-unit" class="gm-input">
+            <option value="kg">kg</option>
+            <option value="litre">litre</option>
+            <option value="piece">piece</option>
+            <option value="dozen">dozen</option>
+            <option value="500g">500g</option>
+            <option value="250g">250g</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="gm-row">
+        <div class="gm-form-group">
+          <label class="gm-label">Shop Price (₹) *</label>
+          <input type="number" id="gm-shop-price" class="gm-input" placeholder="e.g. 56" min="0" step="0.5">
+        </div>
+        <div class="gm-form-group">
+          <label class="gm-label">Market Rate (₹) <small>leave blank if daily varies</small></label>
+          <input type="number" id="gm-market-rate" class="gm-input" placeholder="e.g. 52" min="0" step="0.5">
+        </div>
+      </div>
+
+      <div class="gm-form-group">
+        <label class="gm-label">Brand Names <small>(comma-separated, e.g. Aashirvaad, Fortune)</small></label>
+        <input type="text" id="gm-brands" class="gm-input" placeholder="Brand1, Brand2, Brand3">
+      </div>
+
+      <div class="gm-form-group gm-instock-row">
+        <label class="gm-label">Status</label>
+        <label class="gm-toggle-label">
+          <input type="checkbox" id="gm-instock" class="gm-toggle-input" checked>
+          <span class="gm-toggle-track">
+            <span class="gm-toggle-thumb"></span>
+          </span>
+          <span class="gm-toggle-text">In Stock / ಸ್ಟಾಕ್ ಇದೆ</span>
+        </label>
+      </div>
+    </div>
+    <div class="gm-footer">
+      <button id="gm-save-btn" class="gm-save-btn">💾 Save Item</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
        BOTTOM NAVIGATION
        ══════════════════════════════════════════════ -->
   <nav id="bottom-nav">
@@ -734,9 +900,9 @@
       <span class="nav-icon">📋</span>
       <span class="nav-label" data-i18n="udri">Udri</span>
     </button>
-    <button class="nav-item" data-page="settings">
-      <span class="nav-icon">⚙️</span>
-      <span class="nav-label" data-i18n="settings">Settings</span>
+    <button class="nav-item" data-page="grocery">
+      <span class="nav-icon">🛍️</span>
+      <span class="nav-label">Items</span>
     </button>
   </nav>
 
@@ -794,6 +960,7 @@
   import { initAmountCalc } from './js/amount-calc.js';
   import { initNotes } from './js/notes.js';
   import { initSettings } from './js/settings.js';
+  import { initGrocery } from './js/grocery.js';
 
   // ─── Boot (with timeout safety) ──────────────
   try {
@@ -854,6 +1021,9 @@
         break;
       case 'settings':
         await initSettings();
+        break;
+      case 'grocery':
+        await initGrocery();
         break;
     }
   });
