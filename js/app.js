@@ -229,9 +229,57 @@ export async function initApp() {
   // Register once — do NOT unregister every time (breaks PWA installability)
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').then(reg => {
-      // Check for SW updates silently in background
       reg.update();
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            showUpdatePopup();
+          }
+        });
+      });
     }).catch(console.error);
+    
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) {
+        refreshing = true;
+        window.location.reload();
+      }
+    });
+  }
+
+  function showUpdatePopup() {
+    let popup = document.getElementById('pwa-update-popup');
+    if (!popup) {
+      popup = document.createElement('div');
+      popup.id = 'pwa-update-popup';
+      popup.innerHTML = `
+        <div style="flex: 1;">
+          <div style="font-weight: 700; font-size: 14px;">Update Available 🚀</div>
+          <div style="font-size: 11px; opacity: 0.9; margin-top: 2px;">A new version of the app is ready.</div>
+        </div>
+        <button id="pwa-update-btn" style="background: #fff; color: var(--primary); border: none; padding: 6px 12px; border-radius: 8px; font-weight: 800; cursor: pointer;">Update Now</button>
+      `;
+      popup.style.cssText = 'position: fixed; bottom: 80px; left: 16px; right: 16px; background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #fff; padding: 12px 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; z-index: 10000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.08, 0.64, 1);';
+      document.body.appendChild(popup);
+      
+      document.getElementById('pwa-update-btn').addEventListener('click', () => {
+        popup.style.opacity = '0';
+        navigator.serviceWorker.getRegistration().then(reg => {
+          if (reg && reg.waiting) {
+            reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+          } else {
+            window.location.reload();
+          }
+        });
+      });
+    }
+    // Animate in
+    setTimeout(() => {
+      popup.style.transform = 'translateY(0)';
+      popup.style.opacity = '1';
+    }, 100);
   }
 
   // Open DB with a timeout so we never hang on splash

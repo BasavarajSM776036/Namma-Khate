@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mk-store-v7';
+const CACHE_NAME = 'mk-store-v8';
 const ASSETS = [
   './',
   './index.html',
@@ -22,8 +22,14 @@ const ASSETS = [
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
   );
+});
+
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('activate', e => {
