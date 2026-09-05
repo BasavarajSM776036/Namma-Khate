@@ -4,7 +4,7 @@
  */
 
 const DB_NAME = 'MKStoreDB';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 let _db = null;
 
@@ -63,6 +63,13 @@ export function openDB() {
       // Settings store
       if (!db.objectStoreNames.contains('settings')) {
         db.createObjectStore('settings', { keyPath: 'key' });
+      }
+
+      // Grocery items store
+      if (!db.objectStoreNames.contains('grocery_items')) {
+        const s = db.createObjectStore('grocery_items', { keyPath: 'id', autoIncrement: true });
+        s.createIndex('category', 'category', { unique: false });
+        s.createIndex('inStock', 'inStock', { unique: false });
       }
     };
 
@@ -336,7 +343,7 @@ export async function deleteSupplierItem(id) {
 export async function exportAllData() {
   await openDB();
   const stores = ['collections', 'purchases', 'customers', 'credit_transactions',
-    'payments', 'suppliers', 'supplier_items', 'settings'];
+    'payments', 'suppliers', 'supplier_items', 'settings', 'grocery_items'];
   const data = {};
   for (const s of stores) data[s] = await getAll(s);
   return data;
@@ -345,7 +352,7 @@ export async function exportAllData() {
 export async function importAllData(data) {
   await openDB();
   const stores = ['collections', 'purchases', 'customers', 'credit_transactions',
-    'payments', 'suppliers', 'supplier_items', 'settings'];
+    'payments', 'suppliers', 'supplier_items', 'settings', 'grocery_items'];
   for (const storeName of stores) {
     if (!data[storeName]) continue;
     const store = tx(storeName, 'readwrite');

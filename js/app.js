@@ -64,7 +64,7 @@ function hideInstallBanner() {
 
 // ─── Router ────────────────────────────────────────────────────────────────
 
-const pages = ['splash','language-chooser','dashboard','collection','purchase','profit','udri','customer-detail','weight-calc','amount-calc','notes','settings'];
+const pages = ['splash','language-chooser','dashboard','collection','purchase','profit','udri','customer-detail','weight-calc','amount-calc','notes','settings','grocery'];
 
 export function showPage(pageId, params = {}, skipEvent = false) {
   pages.forEach(p => {

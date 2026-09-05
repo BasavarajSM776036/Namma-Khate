@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mk-store-v6';
+const CACHE_NAME = 'mk-store-v7';
 const ASSETS = [
   './',
   './index.html',
@@ -16,6 +16,7 @@ const ASSETS = [
   './js/amount-calc.js',
   './js/notes.js',
   './js/settings.js',
+  './js/grocery.js',
   'https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap'
 ];
 
