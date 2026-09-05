@@ -6,9 +6,14 @@ import { t, setLanguage, applyTranslations } from './i18n.js';
 import { getSetting, setSetting, exportAllData, importAllData, clearAllData } from './db.local.js';
 import { showToast, showConfirm } from './app.js';
 
+let handlersAttached = false;
+
 export async function initSettings() {
   await loadSettings();
-  setupSettingsHandlers();
+  if (!handlersAttached) {
+    setupSettingsHandlers();
+    handlersAttached = true;
+  }
 }
 
 async function loadSettings() {
