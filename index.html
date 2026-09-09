@@ -76,9 +76,7 @@
       <span class="splash-credit-name">Basavaraj S M</span>
     </div>
   </div>
-  <!-- Running mascot characters on splash -->
-  <div class="splash-mascot">🏃</div>
-  <div class="splash-mascot splash-mascot-2">🚶</div>
+
 
   <!-- ══════════════════════════════════════════════
        PAGE: DASHBOARD
@@ -86,16 +84,16 @@
   <div id="page-dashboard" class="page">
     <!-- Header -->
     <div class="dash-header">
-      <!-- Floating anime shop items in header background -->
-      <div class="anime-shop-floats">
-        <span class="anime-float-item">🍚</span>
-        <span class="anime-float-item">💰</span>
-        <span class="anime-float-item">⚖️</span>
-        <span class="anime-float-item">🛍️</span>
-        <span class="anime-float-item">🌾</span>
-        <span class="anime-float-item">🫙</span>
-        <span class="anime-float-item">🧂</span>
-        <span class="anime-float-item">🫘</span>
+      <!-- Premium floating grocery items -->
+      <div class="premium-floats" id="dash-floats" aria-hidden="true">
+        <div class="pf-item pf-1" data-depth="0.4">🍎</div>
+        <div class="pf-item pf-2" data-depth="0.6">🥛</div>
+        <div class="pf-item pf-3" data-depth="0.3">🍞</div>
+        <div class="pf-item pf-4" data-depth="0.5">🍅</div>
+        <div class="pf-item pf-5" data-depth="0.7">🍌</div>
+        <div class="pf-item pf-6" data-depth="0.4">🧅</div>
+        <div class="pf-item pf-7" data-depth="0.3">🍫</div>
+        <div class="pf-item pf-8" data-depth="0.5">🛒</div>
       </div>
       <div class="dash-header-row">
         <div>
@@ -976,9 +974,9 @@
   import { initNotes } from './js/notes.js';
   import { initSettings } from './js/settings.js';
   import { initGrocery } from './js/grocery.js';
-  import { initAnimeEffects, coinRain, starBurst, staggerGroceryCards } from './js/animations.js';
+  import { initPremiumMotion, staggerGroceryCards, initScrollReveal } from './js/animations.js';
 
-  // ─── Boot (with timeout safety) ──────────────
+  // ─── Boot ────────────────────────────────────────
   try {
     await Promise.race([
       openDB(),
@@ -990,17 +988,15 @@
   loadLanguage();
   applyTranslations();
 
-  // Service worker registration handled by initApp()
-
-  // ─── App init (router, nav, language chooser) ──
+  // ─── App init ──────────────────────────────────
   await initApp();
 
-  // ─── Init anime effects globally ───────────────
-  initAnimeEffects();
+  // ─── Premium motion system ─────────────────────
+  initPremiumMotion();
 
   // ─── Page change handler ───────────────────────
   window.addEventListener('pageChange', async e => {
-    const { page, params } = e.detail;
+    const { page } = e.detail;
     applyTranslations();
 
     switch(page) {
@@ -1015,7 +1011,6 @@
         break;
       case 'profit':
         await initProfit();
-        // Show/hide custom panel
         document.querySelectorAll('.profit-tab').forEach(tab => {
           tab.addEventListener('click', () => {
             const panel = document.getElementById('profit-custom-panel');
@@ -1043,30 +1038,19 @@
         break;
       case 'grocery':
         await initGrocery();
-        // Stagger grocery cards with anime pop
-        setTimeout(() => staggerGroceryCards('.grocery-item-card'), 200);
+        setTimeout(() => {
+          staggerGroceryCards('.grocery-item-card');
+          initScrollReveal();
+        }, 200);
         break;
     }
-  });
 
-  // ─── Coin rain on collection save ─────────────
-  document.addEventListener('click', (e) => {
-    // Check if a save/submit button was clicked
-    const btn = e.target.closest('button');
-    if (!btn) return;
-    const isSubmitBtn = btn.id === 'col-save-btn' || 
-                        btn.id === 'pur-save-btn' || 
-                        btn.classList.contains('btn-primary') ||
-                        btn.id === 'gm-save-btn';
-    if (isSubmitBtn) {
-      setTimeout(() => {
-        coinRain(10);
-        starBurst(e.clientX, e.clientY, 8);
-      }, 300);
-    }
+    // Re-apply scroll reveal on each page change
+    setTimeout(() => initScrollReveal(), 100);
   });
 
   // Dashboard is initialized via the pageChange event fired by showPage('dashboard') in initApp()
 </script>
+
 </body>
 </html>

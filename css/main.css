@@ -4356,12 +4356,139 @@ input:focus, select:focus, textarea:focus {
   50% { transform: translateY(-12px) scale(1.08); }
 }
 
-/* ─── Star burst on save/success ───────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   PREMIUM 2026 MOTION SYSTEM — Ambient + Floating + Micro
+   ══════════════════════════════════════════════════════════════ */
 
-.star-burst {
+/* ─── Ambient Background Blobs ──────────────────────────────── */
+
+#ambient-bg {
   position: fixed;
+  inset: 0;
   pointer-events: none;
-  z-index: 99999;
-  font-size: 20px;
-  animation: starSparkle 0.8s ease-out forwards;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.amb-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.12;
+  will-change: transform;
+}
+
+.amb-1 {
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, #FF6B2C, #FF8C00);
+  top: -120px; right: -80px;
+  animation: ambFloat1 18s ease-in-out infinite;
+}
+
+.amb-2 {
+  width: 340px; height: 340px;
+  background: radial-gradient(circle, #1E8A3C, #22C55E);
+  bottom: 100px; left: -60px;
+  animation: ambFloat2 22s ease-in-out infinite;
+}
+
+.amb-3 {
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, #7C3AED, #A855F7);
+  top: 45%; left: 50%;
+  animation: ambFloat3 26s ease-in-out infinite;
+}
+
+@keyframes ambFloat1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(-30px, 40px) scale(1.08); }
+  66%       { transform: translate(20px, -20px) scale(0.94); }
+}
+
+@keyframes ambFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(40px, -30px) scale(1.1); }
+  70%       { transform: translate(-20px, 20px) scale(0.96); }
+}
+
+@keyframes ambFloat3 {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50%       { transform: translate(calc(-50% + 30px), calc(-50% - 20px)) scale(1.12); }
+}
+
+/* ─── Premium Floating Grocery Items ─────────────────────────── */
+
+.premium-floats {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: visible;
+}
+
+.pf-item {
+  position: absolute;
+  font-size: 26px;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  transform: translate(-50%, -50%);
+  animation: pfFloat linear infinite both;
+  will-change: transform;
+  opacity: 0.7;
+  user-select: none;
+}
+
+/* Position each item in the header */
+.pf-1 { top: 30%; left: 8%;  animation-duration: 5.5s; animation-delay: 0s; }
+.pf-2 { top: 55%; left: 18%; animation-duration: 6.7s; animation-delay: -1.5s; }
+.pf-3 { top: 20%; left: 88%; animation-duration: 4.8s; animation-delay: -0.8s; }
+.pf-4 { top: 70%; left: 78%; animation-duration: 7.2s; animation-delay: -2.3s; }
+.pf-5 { top: 40%; left: 93%; animation-duration: 5.9s; animation-delay: -1.1s; }
+.pf-6 { top: 75%; left: 5%;  animation-duration: 6.4s; animation-delay: -3.2s; }
+.pf-7 { top: 15%; left: 55%; animation-duration: 8.1s; animation-delay: -0.4s; }
+.pf-8 { top: 65%; left: 45%; animation-duration: 5.2s; animation-delay: -2.8s; }
+
+@keyframes pfFloat {
+  0%   { transform: translate(-50%, -50%)  translateY(0px)    rotate(0deg)   scale(1); }
+  20%  { transform: translate(-50%, -50%)  translateY(-10px)  rotate(4deg)   scale(1.04); }
+  40%  { transform: translate(-50%, -50%)  translateY(-16px)  rotate(-2deg)  scale(1.02); }
+  60%  { transform: translate(-50%, -50%)  translateY(-8px)   rotate(3deg)   scale(1.06); }
+  80%  { transform: translate(-50%, -50%)  translateY(-14px)  rotate(-3deg)  scale(1.01); }
+  100% { transform: translate(-50%, -50%)  translateY(0px)    rotate(0deg)   scale(1); }
+}
+
+/* ─── pfWiggle keyframe for JS-triggered wiggle ─────────────── */
+
+@keyframes pfWiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  18% { transform: rotate(-10deg) scale(1.12); }
+  36% { transform: rotate(8deg) scale(1.14); }
+  54% { transform: rotate(-6deg) scale(1.08); }
+  72% { transform: rotate(4deg) scale(1.04); }
+}
+
+/* ─── Glass Card Enhancement ────────────────────────────────── */
+
+.feature-card {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* ─── Prefers Reduced Motion ─────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-item,
+  .amb-blob,
+  .amb-1, .amb-2, .amb-3 {
+    animation: none !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+  .feature-card,
+  .period-card,
+  .nav-item,
+  .btn-primary,
+  .cta-explore-btn {
+    transition: none !important;
+    animation: none !important;
+  }
 }
