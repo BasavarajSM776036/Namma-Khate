@@ -76,12 +76,27 @@
       <span class="splash-credit-name">Basavaraj S M</span>
     </div>
   </div>
+  <!-- Running mascot characters on splash -->
+  <div class="splash-mascot">🏃</div>
+  <div class="splash-mascot splash-mascot-2">🚶</div>
+
   <!-- ══════════════════════════════════════════════
        PAGE: DASHBOARD
        ══════════════════════════════════════════════ -->
   <div id="page-dashboard" class="page">
     <!-- Header -->
     <div class="dash-header">
+      <!-- Floating anime shop items in header background -->
+      <div class="anime-shop-floats">
+        <span class="anime-float-item">🍚</span>
+        <span class="anime-float-item">💰</span>
+        <span class="anime-float-item">⚖️</span>
+        <span class="anime-float-item">🛍️</span>
+        <span class="anime-float-item">🌾</span>
+        <span class="anime-float-item">🫙</span>
+        <span class="anime-float-item">🧂</span>
+        <span class="anime-float-item">🫘</span>
+      </div>
       <div class="dash-header-row">
         <div>
           <div class="dash-shop-name">MAHALINGESHWAR KIRANI STORE</div>
@@ -961,6 +976,7 @@
   import { initNotes } from './js/notes.js';
   import { initSettings } from './js/settings.js';
   import { initGrocery } from './js/grocery.js';
+  import { initAnimeEffects, coinRain, starBurst, staggerGroceryCards } from './js/animations.js';
 
   // ─── Boot (with timeout safety) ──────────────
   try {
@@ -978,6 +994,9 @@
 
   // ─── App init (router, nav, language chooser) ──
   await initApp();
+
+  // ─── Init anime effects globally ───────────────
+  initAnimeEffects();
 
   // ─── Page change handler ───────────────────────
   window.addEventListener('pageChange', async e => {
@@ -1024,7 +1043,26 @@
         break;
       case 'grocery':
         await initGrocery();
+        // Stagger grocery cards with anime pop
+        setTimeout(() => staggerGroceryCards('.grocery-item-card'), 200);
         break;
+    }
+  });
+
+  // ─── Coin rain on collection save ─────────────
+  document.addEventListener('click', (e) => {
+    // Check if a save/submit button was clicked
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    const isSubmitBtn = btn.id === 'col-save-btn' || 
+                        btn.id === 'pur-save-btn' || 
+                        btn.classList.contains('btn-primary') ||
+                        btn.id === 'gm-save-btn';
+    if (isSubmitBtn) {
+      setTimeout(() => {
+        coinRain(10);
+        starBurst(e.clientX, e.clientY, 8);
+      }, 300);
     }
   });
 

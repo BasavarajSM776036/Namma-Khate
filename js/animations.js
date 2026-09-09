@@ -306,3 +306,161 @@ export function revealCards(parentSelector) {
   setTimeout(() => staggerReveal(`${parentSelector} .feature-card`, 60), 50);
   setTimeout(() => staggerReveal(`${parentSelector} .period-card`, 80), 100);
 }
+
+// ─── Coin Rain ─────────────────────────────────────────────────
+
+export function coinRain(count = 12) {
+  let container = document.getElementById('coin-rain-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'coin-rain-container';
+    container.className = 'coin-rain-container';
+    document.body.appendChild(container);
+  }
+
+  const coins = ['💰', '🪙', '💵', '💴', '✨', '⭐'];
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const coin = document.createElement('div');
+      coin.className = 'coin-drop';
+      coin.textContent = coins[Math.floor(Math.random() * coins.length)];
+      coin.style.left = `${10 + Math.random() * 80}%`;
+      coin.style.setProperty('--drop-dist', `${150 + Math.random() * 200}px`);
+      coin.style.animationDuration = `${0.6 + Math.random() * 0.5}s`;
+      container.appendChild(coin);
+      setTimeout(() => coin.remove(), 1200);
+    }, i * 60);
+  }
+}
+
+// ─── Star Burst on save ────────────────────────────────────────
+
+export function starBurst(x, y, count = 8) {
+  const starEmojis = ['⭐', '✨', '🌟', '💫', '✦', '★'];
+  for (let i = 0; i < count; i++) {
+    const star = document.createElement('div');
+    star.className = 'star-burst';
+    star.textContent = starEmojis[Math.floor(Math.random() * starEmojis.length)];
+    const angle = (i / count) * 360;
+    const dist = 40 + Math.random() * 40;
+    const rad = (angle * Math.PI) / 180;
+    star.style.left = `${x}px`;
+    star.style.top = `${y}px`;
+    star.style.setProperty('--tx', `${Math.cos(rad) * dist}px`);
+    star.style.setProperty('--ty', `${Math.sin(rad) * dist}px`);
+    star.style.animationDuration = `${0.5 + Math.random() * 0.4}s`;
+    star.style.fontSize = `${12 + Math.random() * 12}px`;
+    document.body.appendChild(star);
+    setTimeout(() => star.remove(), 900);
+  }
+}
+
+// ─── Touch Sparkle Trail ──────────────────────────────────────
+
+const SPARKLE_EMOJIS = ['✨', '⭐', '💫', '🌟', '✦', '•', '·'];
+
+export function initSparkleTrail() {
+  let lastSparkle = 0;
+  document.addEventListener('pointermove', (e) => {
+    const now = Date.now();
+    if (now - lastSparkle < 80) return; // Throttle
+    lastSparkle = now;
+
+    const dot = document.createElement('div');
+    dot.className = 'sparkle-trail-dot';
+    dot.textContent = SPARKLE_EMOJIS[Math.floor(Math.random() * SPARKLE_EMOJIS.length)];
+    dot.style.left = `${e.clientX - 8}px`;
+    dot.style.top = `${e.clientY - 8}px`;
+    dot.style.opacity = Math.random() * 0.6 + 0.3;
+    dot.style.fontSize = `${10 + Math.random() * 10}px`;
+    document.body.appendChild(dot);
+    setTimeout(() => dot.remove(), 650);
+  });
+}
+
+// ─── Shop Mascot Running Animation ────────────────────────────
+
+export function initShopMascots() {
+  // Already handled via CSS @keyframes marchLeft on .splash-mascot
+  // This adds mascots dynamically to the dashboard too
+  const dashboard = document.getElementById('page-dashboard');
+  if (!dashboard) return;
+
+  const mascots = ['🏃', '🚶', '🛒', '🧹', '👨‍🍳'];
+  const mascotEl = document.createElement('div');
+  mascotEl.style.cssText = `
+    position: absolute;
+    bottom: 0;
+    font-size: 28px;
+    pointer-events: none;
+    z-index: 1;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+    animation: marchLeft 12s linear infinite;
+  `;
+  mascotEl.textContent = mascots[Math.floor(Math.random() * mascots.length)];
+  dashboard.style.position = 'relative';
+  dashboard.style.overflow = 'hidden';
+  dashboard.appendChild(mascotEl);
+}
+
+// ─── Page Transition with anime bounce ────────────────────────
+
+export function animatePageTransition(pageEl) {
+  if (!pageEl) return;
+  pageEl.style.animation = 'none';
+  pageEl.style.opacity = '0';
+  pageEl.style.transform = 'translateY(20px) scale(0.97)';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      pageEl.style.transition = 'opacity 0.3s ease, transform 0.3s cubic-bezier(0.34,1.4,0.64,1)';
+      pageEl.style.opacity = '1';
+      pageEl.style.transform = 'translateY(0) scale(1)';
+    });
+  });
+}
+
+// ─── Grocery item card stagger pop ────────────────────────────
+
+export function staggerGroceryCards(selector = '.grocery-item-card') {
+  const cards = document.querySelectorAll(selector);
+  cards.forEach((card, i) => {
+    card.style.opacity = '0';
+    card.style.transform = 'scale(0.85) translateY(20px)';
+    card.style.transition = `
+      opacity 0.35s ${i * 50}ms cubic-bezier(0.34,1.56,0.64,1),
+      transform 0.35s ${i * 50}ms cubic-bezier(0.34,1.56,0.64,1)
+    `;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        card.style.opacity = '1';
+        card.style.transform = 'scale(1) translateY(0)';
+      });
+    });
+  });
+}
+
+// ─── Wiggle a specific element ────────────────────────────────
+
+export function wiggleElement(el) {
+  if (!el) return;
+  el.style.animation = 'none';
+  requestAnimationFrame(() => {
+    el.style.animation = 'wiggle 0.6s ease-in-out';
+    el.addEventListener('animationend', () => { el.style.animation = ''; }, { once: true });
+  });
+}
+
+// ─── Init all anime effects globally ─────────────────────────
+
+export function initAnimeEffects() {
+  // Touch sparkle trail (on mobile/touch, not mouse — prevent on desktop for UX)
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  if (isTouchDevice) {
+    initSparkleTrail();
+  }
+
+  // Add ripple to all nav items
+  document.querySelectorAll('.nav-item').forEach(addRippleEffect);
+  // Add ripple to all feature cards
+  document.querySelectorAll('.feature-card').forEach(addRippleEffect);
+}

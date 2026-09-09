@@ -187,10 +187,7 @@ export async function initApp() {
   // ─── WIRE SPLASH "Go to Dashboard" BUTTON IMMEDIATELY ─────────
   // Must be first — before any await — so the user can click it
   // as soon as the page renders, without waiting for DB/SW.
-  let splashNavigated = false;
   const goToDash = () => {
-    if (splashNavigated) return;
-    splashNavigated = true;
     const nav = document.getElementById('bottom-nav');
     if (nav) nav.style.display = 'flex';
     showPage('dashboard');
@@ -209,17 +206,13 @@ export async function initApp() {
       gotoBtn.style.animation = 'none';
       gotoBtn.style.transform = 'scale(0.92)';
       gotoBtn.style.opacity = '0.75';
+      clearTimeout(splashTimer);
       setTimeout(goToDash, 200);
     });
   }
 
   // Auto-navigate to dashboard after 5s if button not pressed
   const splashTimer = setTimeout(goToDash, 5000);
-
-  // Cancel auto-timer if user clicks manually
-  if (gotoBtn) {
-    gotoBtn.addEventListener('click', () => clearTimeout(splashTimer), { once: true });
-  }
 
   // ─── Show splash immediately ───────────────────────────────────
   showPage('splash', {}, true);
@@ -350,7 +343,12 @@ export async function initApp() {
       setLanguage(next);
       setSetting('language', next);
       applyTranslations();
-      btn.textContent = next === 'en' ? 'ಕನ್ನಡ' : 'English';
+      // Update ALL lang-switch buttons in the page
+      document.querySelectorAll('.lang-switch').forEach(b => {
+        b.textContent = next === 'en' ? 'ಕನ್ನಡ' : 'English';
+      });
+      // Re-render dashboard header (date in correct language)
+      window.dispatchEvent(new CustomEvent('pageChange', { detail: { page: 'dashboard', params: {} } }));
     });
   });
 
